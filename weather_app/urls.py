@@ -18,5 +18,5 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    path('', get_data, name='weather_app'),
+    path('', ViewWeather.as_view(), name='weather_app'),
 ]
