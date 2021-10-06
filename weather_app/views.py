@@ -35,10 +35,8 @@ class ViewWeather(TemplateView):
     def get_data_from_weatherbit(self, date_time_of_req):
         url = 'https://api.weatherbit.io/v2.0/current'
         params = {
-            # 'city_id': 524901,
             'lon': 37.61556,  # координаты Москвы
             'lat': 55.4507,  # координаты Москвы
-            'lang': 'ru',
             'key': API_KEYS["weatherbit"],
         }
         result = requests.get(url, params=params)
@@ -59,10 +57,8 @@ class ViewWeather(TemplateView):
     def get_data_from_openweathermap(self, date_time_of_req):
         url = 'https://api.openweathermap.org/data/2.5/weather'
         params = {
-            # 'city_id': 524901,
             'lon': 37.61556,  # координаты Москвы
             'lat': 55.4507,  # координаты Москвы
-            'lang': 'ru',
             'appid': API_KEYS["openweathermap"],
         }
         result = requests.get(url, params=params)
