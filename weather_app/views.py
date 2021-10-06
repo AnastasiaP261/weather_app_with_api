@@ -33,44 +33,52 @@ class ViewWeather(TemplateView):
         return render(request, self.template_name, {})
 
     def get_data_from_weatherbit(self, date_time_of_req):
-        url = 'https://api.weatherbit.io/v2.0/current'
-        params = {
-            'lon': 37.61556,  # координаты Москвы
-            'lat': 55.4507,  # координаты Москвы
-            'key': API_KEYS["weatherbit"],
-        }
-        result = requests.get(url, params=params)
+        try:
+            url = 'https://api.weatherbit.io/v2.0/current'
+            params = {
+                'lon': 37.61556,  # координаты Москвы
+                'lat': 55.4507,  # координаты Москвы
+                'key': API_KEYS["weatherbit"],
+            }
+            result = requests.get(url, params=params)
 
-        item = json.loads(result.content)['data'][0]
-        print(item)
-        obj = self.model.objects.create(
-            city=item['city_name'],
-            date_time=item['ob_time'],
-            lat=item['lat'],
-            lon=item['lon'],
-            temp=item['temp'],
-            site="weatherbit",
-            date_time_of_req=date_time_of_req,
-        )
-        obj.save()
+            item = json.loads(result.content)['data'][0]
+            print(item)
+            obj = self.model.objects.create(
+                city=item['city_name'],
+                date_time=item['ob_time'],
+                lat=item['lat'],
+                lon=item['lon'],
+                temp=item['temp'],
+                site="weatherbit",
+                date_time_of_req=date_time_of_req,
+            )
+            obj.save()
+        except KeyError:
+            print('''Ответ с сайта weatherbit содержит неожиданные данные. 
+                  Запись в базу не была произведена.''')
 
     def get_data_from_openweathermap(self, date_time_of_req):
-        url = 'https://api.openweathermap.org/data/2.5/weather'
-        params = {
-            'lon': 37.61556,  # координаты Москвы
-            'lat': 55.4507,  # координаты Москвы
-            'appid': API_KEYS["openweathermap"],
-        }
-        result = requests.get(url, params=params)
+        try:
+            url = 'https://api.openweathermap.org/data/2.5/weather'
+            params = {
+                'lon': 37.61556,  # координаты Москвы
+                'lat': 55.4507,  # координаты Москвы
+                'appid': API_KEYS["openweathermap"],
+            }
+            result = requests.get(url, params=params)
 
-        item = json.loads(result.content)
-        obj = self.model.objects.create(
-            city=item['name'],
-            # date_time=item['ob_time'],  # на этом сайте нет таймштампа
-            lat=item['coord']['lat'],
-            lon=item['coord']['lon'],
-            temp=item['main']['temp'],
-            site="openweathermap",
-            date_time_of_req=date_time_of_req,
-        )
-        obj.save()
+            item = json.loads(result.content)
+            obj = self.model.objects.create(
+                city=item['name'],
+                # date_time=item['ob_time'],  # на этом сайте нет таймштампа
+                lat=item['coord']['lat'],
+                lon=item['coord']['lon'],
+                temp=item['main']['temp'],
+                site="openweathermap",
+                date_time_of_req=date_time_of_req,
+            )
+            obj.save()
+        except KeyError:
+            print('''Ответ с сайта openweathermap содержит неожиданные данные. 
+                  Запись в базу не была произведена.''')
