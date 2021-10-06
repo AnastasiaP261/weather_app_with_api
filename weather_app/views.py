@@ -1,27 +1,29 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import TemplateView
-from django.shortcuts import render
-from local_properties.api_keys import API_KEYS
-import sqlite3
-import requests
 import json
 from datetime import datetime
-import urllib
-from .models import WeatherData
+
+import requests
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
+from django.views.generic import TemplateView
+
+from local_properties.api_keys import API_KEYS
+from .models import WeatherData
 
 
+# класс для отображения страницы, реализует основной бизнес-процесс данного приложения
 class ViewWeather(TemplateView):
     template_name = 'get_weather.html'
     model = WeatherData
 
-    # можно было оформить представления в виде классов, но
-    # так как в приложении нет страниц как таковых и весь функционал классов все равно
-    # не будет использоваться, я решила что это лишнее
     def get(self, request, *args, **kwargs):
+        # по нажатию кнопки выполняется get-запрос с параметром click=1
+        # этот параметр - индикатор того, была ли нажата кнопка(в таком случае нуэжо делать
+        # запросы к апи сайтов) или было просто запрошена страница и ее надо просто отобразить
         req = self.request.GET
         if req:
-            date_time_of_req = datetime.now()  # для того, чтобы добавить метку времени получения записи
+            # для того, чтобы добавить метку времени получения записей
+            date_time_of_req = datetime.now()
 
             # работа с апи сайтов и занесение информации в бд
             self.get_data_from_weatherbit(date_time_of_req)
@@ -54,8 +56,6 @@ class ViewWeather(TemplateView):
         )
         obj.save()
 
-        return result
-
     def get_data_from_openweathermap(self, date_time_of_req):
         url = 'https://api.openweathermap.org/data/2.5/weather'
         params = {
@@ -78,4 +78,3 @@ class ViewWeather(TemplateView):
             date_time_of_req=date_time_of_req,
         )
         obj.save()
-        return result

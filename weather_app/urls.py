@@ -19,4 +19,5 @@ from .views import *
 
 urlpatterns = [
     path('', ViewWeather.as_view(), name='weather_app'),
+    path('get_weather_data/', ViewWeather.as_view(), name='weather_app'),
 ]
