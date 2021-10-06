@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from weather_app.models import WeatherData
 
 
