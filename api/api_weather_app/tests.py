@@ -1,9 +1,10 @@
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from rest_framework.reverse import reverse
 from rest_framework import status
+
 from weather_app.models import WeatherData
-from datetime import datetime
 
 User = get_user_model()
 
