@@ -12,13 +12,13 @@ class WeatherAppTestCases(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.table_str = WeatherData.objects.create(city='city_name',
-                                               date_time=datetime.now(),
-                                               lon=50.2,
-                                               lat=40.8,
-                                               temp=8,
-                                               date_time_of_req=datetime.now(),
-                                               site='site_name',
-                                               )
+                                                   date_time=datetime.now(),
+                                                   lon=50.2,
+                                                   lat=40.8,
+                                                   temp=8,
+                                                   date_time_of_req=datetime.now(),
+                                                   site='site_name',
+                                                   )
 
     def test_answer(self):
         """
