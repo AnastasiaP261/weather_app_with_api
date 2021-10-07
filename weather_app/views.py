@@ -43,7 +43,7 @@ class ViewWeather(TemplateView):
             result = requests.get(url, params=params)
 
             item = json.loads(result.content)['data'][0]
-            print(item)
+
             obj = self.model.objects.create(
                 city=item['city_name'],
                 date_time=item['ob_time'],
