@@ -22,6 +22,7 @@
 На стартовой странице нажать кнопку отправки. Сервер приложения поочереди отправит запросы к апи сайтов
 - https://openweathermap.org/current#current_JSON
 - https://www.weatherbit.io/api/swaggerui/weather-api-v2#!/Current32Weather32Data/get_current_city_id_city_id  
+  
 и получит от них ответы в формате json(см. test_for_proeshelon/weather_app/views.py). Далее он обработает
 эти данные и отправит их в базу данных. Вернет пользователю ту же страниц, на которой он был.
 
